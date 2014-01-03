@@ -4,7 +4,7 @@ public class StockMarketYear {
 
     private Dollars startingBalance;
     private InterestRate interestRate;
-    private int totalWithdrawals;
+    private Dollars totalWithdrawals;
     private Dollars startingPrincipal;
     private TaxRate capitalGainsTaxRate;
 
@@ -13,7 +13,7 @@ public class StockMarketYear {
         this.interestRate = interestRate;
         this.startingPrincipal = startingPrincipal;
         this.capitalGainsTaxRate = capitalGainsTaxRate;
-        this.totalWithdrawals = 0;
+        this.totalWithdrawals = new Dollars(0);
     }
 
     public Dollars startingBalance() {
@@ -32,36 +32,37 @@ public class StockMarketYear {
         return capitalGainsTaxRate;
     }
 
-    public void withdraw(int amount) {
-        this.totalWithdrawals += amount;
+    public void withdraw(Dollars amount) {
+        this.totalWithdrawals = totalWithdrawals.add(amount);
     }
 
-    private int capitalGainsWithdrawn() {
-        int result = -1 * (startingPrincipal().amount() - totalWithdrawals);
-        return Math.max(0, result);
+    private Dollars capitalGainsWithdrawn() {
+        return totalWithdrawals.subtractToZero(startingPrincipal());
     }
 
-    public int capitalGainsTaxIncurred() {
-        return  capitalGainsTaxRate.compoundTaxFor(capitalGainsWithdrawn());
+    public Dollars capitalGainsTaxIncurred() {
+        return capitalGainsTaxRate.compoundTaxFor(capitalGainsWithdrawn());
     }
 
-    public int totalWithdrawn() {
-        return totalWithdrawals + capitalGainsTaxIncurred();
+    public Dollars totalWithdrawn() {
+        return totalWithdrawals.add(capitalGainsTaxIncurred());
     }
 
-    public int interestEarned() {
-        return interestRate.interestOn(startingBalance.amount() - totalWithdrawn());
+    public Dollars interestEarned() {
+        return interestRate.interestOn(startingBalance.subtract(totalWithdrawn()));
     }
 
-    public int endingBalance() {
-        return startingBalance.amount() - totalWithdrawn() + interestEarned();
+    public Dollars endingBalance() {
+        return startingBalance
+                .subtract(totalWithdrawn())
+                .add(interestEarned());
     }
 
-    public int endingPrincipal() {
-        return startingPrincipal.subtractToZero(new Dollars(totalWithdrawals)).amount();
+    public Dollars endingPrincipal() {
+        return startingPrincipal.subtractToZero(totalWithdrawals);
     }
 
     public StockMarketYear nextYear() {
-        return new StockMarketYear(new Dollars(this.endingBalance()), new Dollars(this.endingPrincipal()), this.interestRate(), this.capitalGainsTaxRate() );
+        return new StockMarketYear(this.endingBalance(), this.endingPrincipal(), this.interestRate(), this.capitalGainsTaxRate() );
     }
 }
