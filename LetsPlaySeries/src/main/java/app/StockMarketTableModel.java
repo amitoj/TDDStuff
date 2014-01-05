@@ -1,9 +1,6 @@
 package app;
 
-import tdd.Dollars;
-import tdd.InterestRate;
-import tdd.StockMarketYear;
-import tdd.TaxRate;
+import tdd.*;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -11,34 +8,20 @@ public class StockMarketTableModel extends AbstractTableModel {
 
     String titles[] = {"Year", "Starting Balance", "Starting Principal", "Withdrawals", "Appreciation", "Ending Balance"};
 
-    private int startingYear;
-    private int endingYear;
-    private StockMarketYear[] years;
+    private StockMarket market;
 
-
-    public StockMarketTableModel(int startingYear, int endingYear, Dollars startingBalance, Dollars startingPrincipal, InterestRate interestRate, TaxRate capitalGainsTaxRate) {
-        this.startingYear = startingYear;
-        this.endingYear = endingYear;
-        populateYears(startingBalance, startingPrincipal, interestRate, capitalGainsTaxRate);
-    }
-
-    private void populateYears(Dollars startingBalance, Dollars startingPrincipal, InterestRate interestRate, TaxRate capitalGainsTaxRate) {
-        int count = endingYear - startingYear + 1;
-        years = new StockMarketYear[count];
-        years[0] = new StockMarketYear(startingBalance, startingPrincipal, interestRate, capitalGainsTaxRate);
-        for (int i = 1; i < count; i++) {
-            years[i] = years[i - 1].nextYear();
-        }
+    public StockMarketTableModel(StockMarket market) {
+        this.market = market;
     }
 
     @Override
     public int getRowCount() {
-        return years.length;
+        return market.numberOfYears();
     }
 
     @Override
     public int getColumnCount() {
-        return 6;
+        return titles.length;
     }
 
     @Override
@@ -48,9 +31,9 @@ public class StockMarketTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        StockMarketYear currentYear = years[rowIndex];
+        StockMarketYear currentYear = market.getYear(rowIndex);
         switch (columnIndex) {
-            case 0: return startingYear + rowIndex;
+            case 0: return market.startingYear() + rowIndex;
             case 1: return currentYear.startingBalance();
             case 2: return currentYear.startingPrincipal();
             case 3: return currentYear.totalWithdrawn();

@@ -2,6 +2,7 @@ package app;
 
 import tdd.Dollars;
 import tdd.InterestRate;
+import tdd.StockMarket;
 import tdd.TaxRate;
 
 import javax.swing.*;
@@ -18,7 +19,8 @@ public class Application extends JFrame {
     }
 
     private JScrollPane getTableView() {
-        StockMarketTableModel model = new StockMarketTableModel(2010, 2050, new Dollars(10000), new Dollars(7000), new InterestRate(10), new TaxRate(25));
+        StockMarket market = new StockMarket(2010, 2050, new Dollars(10000), new Dollars(7000), new InterestRate(10), new TaxRate(25));
+        StockMarketTableModel model = new StockMarketTableModel(market);
 
         JTable tableView = new JTable(model);
         return new JScrollPane(tableView);
