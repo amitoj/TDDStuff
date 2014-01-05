@@ -65,4 +65,9 @@ public class StockMarketYear {
     public StockMarketYear nextYear() {
         return new StockMarketYear(this.endingBalance(), this.endingPrincipal(), this.interestRate(), this.capitalGainsTaxRate() );
     }
+
+    public Dollars appreciation() {
+        return interestRate.interestOn(startingBalance);
+    }
+
 }
