@@ -1,15 +1,15 @@
-package tdd;
+package domain;
 
 public class StockMarketYear {
 
-    private int year;
+    private Year year;
     private Dollars startingBalance;
     private InterestRate interestRate;
     private Dollars totalWithdrawals;
     private Dollars startingPrincipal;
     private TaxRate capitalGainsTaxRate;
 
-    public StockMarketYear(int year, Dollars startingBalance, Dollars startingPrincipal, InterestRate interestRate, TaxRate capitalGainsTaxRate) {
+    public StockMarketYear(Year year, Dollars startingBalance, Dollars startingPrincipal, InterestRate interestRate, TaxRate capitalGainsTaxRate) {
         this.year = year;
         this.startingBalance = startingBalance;
         this.interestRate = interestRate;
@@ -65,14 +65,14 @@ public class StockMarketYear {
     }
 
     public StockMarketYear nextYear() {
-        return new StockMarketYear(year, this.endingBalance(), this.endingPrincipal(), this.interestRate(), this.capitalGainsTaxRate() );
+        return new StockMarketYear(year.nextYear(), this.endingBalance(), this.endingPrincipal(), this.interestRate(), this.capitalGainsTaxRate() );
     }
 
     public Dollars appreciation() {
-        return interestRate.interestOn(startingBalance);
+        return interestRate.interestOn(startingBalance.subtract(totalWithdrawn()));
     }
 
-    public int year() {
+    public Year year() {
         return year;
     }
 }

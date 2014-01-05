@@ -1,19 +1,15 @@
-package tdd;
+package domain;
 
-public class TaxRate {
+public class InterestRate {
 
     private double rate;
 
-    public TaxRate(double rateAsPercentage) {
-        this.rate = rateAsPercentage / 100.0;
+    public InterestRate(double rateAsPercentage) {
+        rate = rateAsPercentage / 100.0;
     }
 
-    public Dollars simpleTaxFor(Dollars amount) {
-        return new Dollars((int)(rate * amount.toInt()));
-    }
-
-    public Dollars compoundTaxFor(Dollars amount) {
-        return new Dollars((int)((amount.toInt() / (1 - rate)) - amount.toInt()));
+    public Dollars interestOn(Dollars amount) {
+        return new Dollars((int)(amount.toInt() * rate));
     }
 
     @Override
@@ -35,9 +31,9 @@ public class TaxRate {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        TaxRate taxRate = (TaxRate) o;
+        InterestRate rate1 = (InterestRate) o;
 
-        if (Double.compare(taxRate.rate, rate) != 0) return false;
+        if (Double.compare(rate1.rate, rate) != 0) return false;
 
         return true;
     }

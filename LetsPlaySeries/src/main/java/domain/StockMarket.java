@@ -1,12 +1,12 @@
-package tdd;
+package domain;
 
 public class StockMarket {
-    private int startingYear;
-    private int endingYear;
+    private Year startingYear;
+    private Year endingYear;
 
     private StockMarketYear[] years;
 
-    public StockMarket(int startingYear, int endingYear, Dollars startingBalance, Dollars startingPrincipal, InterestRate interestRate, TaxRate capitalGainsTaxRate) {
+    public StockMarket(Year startingYear, Year endingYear, Dollars startingBalance, Dollars startingPrincipal, InterestRate interestRate, TaxRate capitalGainsTaxRate) {
         this.startingYear = startingYear;
         this.endingYear = endingYear;
 
@@ -21,15 +21,12 @@ public class StockMarket {
         }
     }
 
-    public StockMarketYear getYear(int offset) {
+    public StockMarketYear getYearOffset(int offset) {
         return years[offset];
     }
 
     public int numberOfYears() {
-        return endingYear - startingYear + 1;
+        return endingYear.year() - startingYear.year() + 1;
     }
 
-    public int startingYear() {
-        return startingYear;
-    }
 }

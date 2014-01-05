@@ -1,4 +1,4 @@
-package tdd;
+package domain;
 
 /**
  * Created by amitojsh on 03/01/2014.

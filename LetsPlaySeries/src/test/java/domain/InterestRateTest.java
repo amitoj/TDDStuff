@@ -1,4 +1,4 @@
-package tdd;
+package domain;
 
 import org.junit.Test;
 

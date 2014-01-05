@@ -1,6 +1,6 @@
-package app;
+package ui;
 
-import tdd.*;
+import domain.*;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -31,9 +31,9 @@ public class StockMarketTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        StockMarketYear currentYear = market.getYear(rowIndex);
+        StockMarketYear currentYear = market.getYearOffset(rowIndex);
         switch (columnIndex) {
-            case 0: return market.startingYear() + rowIndex;
+            case 0: return currentYear.year();
             case 1: return currentYear.startingBalance();
             case 2: return currentYear.startingPrincipal();
             case 3: return currentYear.totalWithdrawn();
