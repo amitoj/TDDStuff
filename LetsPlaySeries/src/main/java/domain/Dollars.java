@@ -49,7 +49,7 @@ public class Dollars {
         return this.roundOffPennies() == that.roundOffPennies();
     }
 
-    public Dollars minOfTwoValues(Dollars value2) {
-        return new Dollars(Math.min(this.amount, value2.amount));
+    public static Dollars min(Dollars value1, Dollars value2) {
+        return new Dollars(Math.min(value1.amount, value2.amount));
     }
 }
