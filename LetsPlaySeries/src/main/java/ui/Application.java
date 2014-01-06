@@ -29,7 +29,7 @@ public class Application extends JFrame {
         InterestRate interestRate = new InterestRate(10);
         TaxRate capitalGainsTaxRate = new TaxRate(25);
 
-        StockMarket market = new StockMarket(startingYear, endingYear, startingBalance, endingBalance, interestRate, capitalGainsTaxRate);
+        StockMarket market = new StockMarket(startingYear, endingYear, startingBalance, endingBalance, interestRate, capitalGainsTaxRate, new Dollars(10));
         return market;
     }
 
