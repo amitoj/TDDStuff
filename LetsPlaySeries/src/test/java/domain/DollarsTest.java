@@ -33,7 +33,16 @@ public class DollarsTest {
 
     @Test
     public void equalsIgnorePennies() {
+        assertTrue("should round down", new Dollars(10).equals(new Dollars(10.10)));
+        assertTrue("should round up", new Dollars(10).equals(new Dollars(9.90)));
+        assertTrue("should round up when we exactly 50 cents", new Dollars(11).equals(new Dollars(10.50)));
+    }
 
+    @Test
+    public void toStringIgnoresPennies() {
+        assertEquals("should round down", "$10", new Dollars(10.10).toString());
+        assertEquals("should round up", "$10", new Dollars(9.90).toString());
+        assertEquals("should round up when we exactly 50 cents", "$11", new Dollars(10.50).toString() );
     }
 
     @Test

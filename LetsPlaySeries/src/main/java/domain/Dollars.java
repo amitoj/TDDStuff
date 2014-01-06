@@ -2,9 +2,13 @@ package domain;
 
 public class Dollars {
 
-    private int amount;
+    private double amount;
 
     public Dollars(int amount) {
+        this.amount = amount;
+    }
+
+    public Dollars(double amount) {
         this.amount = amount;
     }
 
@@ -17,7 +21,7 @@ public class Dollars {
     }
 
     public Dollars subtractToZero(Dollars dollars) {
-        int result = this.amount - dollars.amount;
+        double result = this.amount - dollars.amount;
         return new Dollars(Math.max(0, result));
     }
 
@@ -25,26 +29,30 @@ public class Dollars {
         return new Dollars((int)(amount * percent / 100.0));
     }
 
+    private long roundOffPennies() {
+        return Math.round(this.amount);
+    }
+
     @Override
     public String toString() {
-        return "$" + amount;
+        return "$" + roundOffPennies();
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + amount;
+        long temp;
+        temp = Double.doubleToLongBits(amount);
+        result = prime * result + (int)(temp ^ (temp >>> 32));
         return result;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Dollars dollars = (Dollars) o;
-        if (amount != dollars.amount) return false;
-        return true;
+        Dollars that = (Dollars)o;
+        return this.roundOffPennies() == that.roundOffPennies();
     }
+
 
 }
