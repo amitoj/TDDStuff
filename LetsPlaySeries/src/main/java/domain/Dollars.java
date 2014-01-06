@@ -1,18 +1,11 @@
 package domain;
 
-/**
- * Created by amitojsh on 03/01/2014.
- */
 public class Dollars {
 
     private int amount;
 
     public Dollars(int amount) {
         this.amount = amount;
-    }
-
-    public int toInt() {
-        return amount;
     }
 
     public Dollars add(Dollars dollars) {

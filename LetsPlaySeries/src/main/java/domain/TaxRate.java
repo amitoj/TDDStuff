@@ -4,31 +4,32 @@ import util.Require;
 
 public class TaxRate {
 
-    private double rate;
+    private double rateAsPercentage;
 
     public TaxRate(double rateAsPercentage) {
         Require.that(rateAsPercentage > 0, "tax rate must be positive (and not zero); was " + rateAsPercentage);
-        this.rate = rateAsPercentage / 100.0;
+        this.rateAsPercentage = rateAsPercentage;
     }
 
     public Dollars simpleTaxFor(Dollars amount) {
-        return new Dollars((int)(rate * amount.toInt()));
+        return amount.percentage(rateAsPercentage);
     }
 
     public Dollars compoundTaxFor(Dollars amount) {
-        return new Dollars((int)((amount.toInt() / (1 - rate)) - amount.toInt()));
+        double compoundRate = (100.0 / (100.0 - rateAsPercentage)) - 1;
+        return amount.percentage(compoundRate * 100.0);
     }
 
     @Override
     public String toString() {
-        return (rate * 100) + "%";
+        return rateAsPercentage + "%";
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        long temp = Double.doubleToLongBits(rate);
+        long temp = Double.doubleToLongBits(rateAsPercentage);
         result = prime * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
@@ -40,7 +41,7 @@ public class TaxRate {
 
         TaxRate taxRate = (TaxRate) o;
 
-        if (Double.compare(taxRate.rate, rate) != 0) return false;
+        if (Double.compare(taxRate.rateAsPercentage, rateAsPercentage) != 0) return false;
 
         return true;
     }
