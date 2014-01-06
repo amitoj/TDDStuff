@@ -1,5 +1,6 @@
 package domain;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -22,4 +23,12 @@ public class StockMarketTest {
         assertEquals(new Dollars(12100), account.getYearOffset(2).startingBalance());
         assertEquals(new Year(2050), account.getYearOffset(40).year());
     }
+
+    @Test
+    @Ignore
+    public void noCummulativeRoundingErrorInInterestCalculations() {
+        StockMarket account = new StockMarket(STARTING_YEAR, ENDING_YEAR, STARTING_BALANCE, STARTING_PRINCIPAL, INTEREST_RATE, CAPITAL_GAINS_TAX_RATE);
+        assertEquals(new Dollars(497852), account.getYearOffset(40).endingBalance());
+    }
+
 }

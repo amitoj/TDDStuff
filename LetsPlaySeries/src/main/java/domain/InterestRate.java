@@ -4,27 +4,27 @@ import util.Require;
 
 public class InterestRate {
 
-    private double rate;
+    private double rateAsPercentage;
 
     public InterestRate(double rateAsPercentage) {
         Require.that(rateAsPercentage > 0, "interest rate must be positive (and not zero); was " + rateAsPercentage);
-        rate = rateAsPercentage / 100.0;
+        this.rateAsPercentage = rateAsPercentage;
     }
 
     public Dollars interestOn(Dollars amount) {
-        return new Dollars((int)(amount.toInt() * rate));
+        return amount.percentage(rateAsPercentage);
     }
 
     @Override
     public String toString() {
-        return (rate * 100) + "%";
+        return rateAsPercentage + "%";
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        long temp = Double.doubleToLongBits(rate);
+        long temp = Double.doubleToLongBits(rateAsPercentage);
         result = prime * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
@@ -36,7 +36,7 @@ public class InterestRate {
 
         InterestRate rate1 = (InterestRate) o;
 
-        if (Double.compare(rate1.rate, rate) != 0) return false;
+        if (Double.compare(rate1.rateAsPercentage, rateAsPercentage) != 0) return false;
 
         return true;
     }

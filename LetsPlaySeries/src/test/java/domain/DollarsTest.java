@@ -26,6 +26,12 @@ public class DollarsTest {
     }
 
     @Test
+    public void percentage() {
+        assertEquals(new Dollars(20), new Dollars(100).percentage(20));
+        assertEquals(new Dollars(4), new Dollars(9).percentage(50));
+    }
+
+    @Test
     public void toInt() {
         assertEquals(20, new Dollars(20).toInt());
     }
