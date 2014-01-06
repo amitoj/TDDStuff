@@ -4,34 +4,34 @@ public class StockMarketYear {
 
     private Year year;
     private Dollars startingBalance;
-    private InterestRate interestRate;
-    private Dollars totalSold;
-    private Dollars startingPrincipal;
+    private GrowthRate growthRate;
+    private Dollars totalSellOrders;
+    private Dollars costBasis;
     private TaxRate capitalGainsTaxRate;
 
-    public StockMarketYear(Year year, Dollars startingBalance, Dollars startingPrincipal, InterestRate interestRate, TaxRate capitalGainsTaxRate) {
+    public StockMarketYear(Year year, Dollars startingBalance, Dollars costBasis, GrowthRate growthRate, TaxRate capitalGainsTaxRate) {
         this.year = year;
         this.startingBalance = startingBalance;
-        this.interestRate = interestRate;
-        this.startingPrincipal = startingPrincipal;
+        this.growthRate = growthRate;
+        this.costBasis = costBasis;
         this.capitalGainsTaxRate = capitalGainsTaxRate;
-        this.totalSold = new Dollars(0);
+        this.totalSellOrders = new Dollars(0);
     }
 
     public Dollars startingBalance() {
         return startingBalance;
     }
 
-    public Dollars startingPrincipal() {
-        return startingPrincipal;
+    public Dollars startingCostBasis() {
+        return costBasis;
     }
 
     private Dollars startingCapitalGains() {
-        return startingBalance().minus(startingPrincipal);
+        return startingBalance().minus(costBasis);
     }
 
-    public InterestRate interestRate() {
-        return interestRate;
+    public GrowthRate growthRate() {
+        return growthRate;
     }
 
     public TaxRate capitalGainsTaxRate() {
@@ -39,46 +39,42 @@ public class StockMarketYear {
     }
 
     public void sell(Dollars amount) {
-        this.totalSold = totalSold.plus(amount);
+        this.totalSellOrders = totalSellOrders.plus(amount);
     }
 
     private Dollars capitalGainsWithdrawn() {
-        return Dollars.min(startingCapitalGains(), totalSold());
+        return Dollars.min(startingCapitalGains(), totalSellOrders());
     }
 
     public Dollars capitalGainsTaxIncurred() {
         return capitalGainsTaxRate.compoundTaxFor(capitalGainsWithdrawn());
     }
 
+    public Dollars totalSellOrders() {
+        return totalSellOrders;
+    }
+
     public Dollars totalSold() {
-        return totalSold;
+        return totalSellOrders.plus(capitalGainsTaxIncurred());
     }
 
-    public Dollars totalWithdrawn() {
-        return totalSold.plus(capitalGainsTaxIncurred());
-    }
-
-    public Dollars interestEarned() {
-        return interestRate.interestOn(startingBalance.minus(totalWithdrawn()));
+    public Dollars growth() {
+        return growthRate.growthFor(startingBalance.minus(totalSold()));
     }
 
     public Dollars endingBalance() {
         return startingBalance
-                .minus(totalWithdrawn())
-                .plus(interestEarned());
+                .minus(totalSold())
+                .plus(growth());
     }
 
-    public Dollars endingPrincipal() {
-        Dollars principalReducedBy = totalWithdrawn().subtractToZero(startingCapitalGains());
-        return startingPrincipal().minus(principalReducedBy);
+    public Dollars endingCostBasis() {
+        Dollars purchasesSold = totalSold().subtractToZero(startingCapitalGains());
+        return startingCostBasis().minus(purchasesSold);
     }
 
     public StockMarketYear nextYear() {
-        return new StockMarketYear(year.nextYear(), this.endingBalance(), this.endingPrincipal(), this.interestRate(), this.capitalGainsTaxRate());
-    }
-
-    public Dollars appreciation() {
-        return interestRate.interestOn(startingBalance.minus(totalWithdrawn()));
+        return new StockMarketYear(year.nextYear(), this.endingBalance(), this.endingCostBasis(), this.growthRate(), this.capitalGainsTaxRate());
     }
 
     public Year year() {

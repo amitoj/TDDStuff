@@ -26,10 +26,10 @@ public class Application extends JFrame {
         Year endingYear = new Year(2050);
         Dollars startingBalance = new Dollars(10000);
         Dollars endingBalance = new Dollars(7000);
-        InterestRate interestRate = new InterestRate(10);
+        GrowthRate growthRate = new GrowthRate(10);
         TaxRate capitalGainsTaxRate = new TaxRate(25);
 
-        StockMarket market = new StockMarket(startingYear, endingYear, startingBalance, endingBalance, interestRate, capitalGainsTaxRate, new Dollars(10));
+        StockMarket market = new StockMarket(startingYear, endingYear, startingBalance, endingBalance, growthRate, capitalGainsTaxRate, new Dollars(715));
         return market;
     }
 

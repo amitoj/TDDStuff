@@ -2,16 +2,16 @@ package domain;
 
 import util.Require;
 
-public class InterestRate {
+public class GrowthRate {
 
     private double rateAsPercentage;
 
-    public InterestRate(double rateAsPercentage) {
-        Require.that(rateAsPercentage > 0, "interest rate must be positive (and not zero); was " + rateAsPercentage);
+    public GrowthRate(double rateAsPercentage) {
+        Require.that(rateAsPercentage > 0, "growth rate must be positive (and not zero); was " + rateAsPercentage);
         this.rateAsPercentage = rateAsPercentage;
     }
 
-    public Dollars interestOn(Dollars amount) {
+    public Dollars growthFor(Dollars amount) {
         return amount.percentage(rateAsPercentage);
     }
 
@@ -34,7 +34,7 @@ public class InterestRate {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        InterestRate rate1 = (InterestRate) o;
+        GrowthRate rate1 = (GrowthRate) o;
 
         if (Double.compare(rate1.rateAsPercentage, rateAsPercentage) != 0) return false;
 
