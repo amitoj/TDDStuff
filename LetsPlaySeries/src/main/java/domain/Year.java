@@ -11,6 +11,14 @@ public class Year {
         return new Year(year + 1);
     }
 
+    public int year() {
+        return year;
+    }
+
+    public int numberOfYearsInclusive(Year endingYear) {
+        return endingYear.year() - this.year() + 1;
+    }
+
     @Override
     public String toString() {
         return String.valueOf(year);
@@ -34,9 +42,5 @@ public class Year {
         if (year != year1.year) return false;
 
         return true;
-    }
-
-    public int year() {
-        return year;
     }
 }

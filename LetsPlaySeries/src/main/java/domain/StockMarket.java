@@ -1,5 +1,7 @@
 package domain;
 
+import util.Require;
+
 public class StockMarket {
     private Year startingYear;
     private Year endingYear;
@@ -22,11 +24,12 @@ public class StockMarket {
     }
 
     public StockMarketYear getYearOffset(int offset) {
+        Require.that(offset >= 0 && offset < numberOfYears(), "Offset needs to be between 0 and " + (numberOfYears() - 1) + " ; was " + offset);
         return years[offset];
     }
 
     public int numberOfYears() {
-        return endingYear.year() - startingYear.year() + 1;
+        return startingYear.numberOfYearsInclusive(endingYear);
     }
 
 }

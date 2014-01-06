@@ -28,41 +28,41 @@ public class StockMarketYearTest {
 
     @Test
     public void capitalGainsTax() throws Exception {
-        StockMarketYear year = newYear();
-        year.withdraw(new Dollars(4000));
-        assertEquals("", new Dollars(333), year.capitalGainsTaxIncurred());
-        assertEquals("", new Dollars(4333), year.totalWithdrawn());
+        StockMarketYear marketYear = newYear();
+        marketYear.withdraw(new Dollars(4000));
+        assertEquals("", new Dollars(333), marketYear.capitalGainsTaxIncurred());
+        assertEquals("", new Dollars(4333), marketYear.totalWithdrawn());
     }
 
     @Test
     public void interestEarned() throws Exception {
-        StockMarketYear year = newYear();
-        assertEquals("basic interest earned", new Dollars(1000), year.interestEarned());
-        year.withdraw(new Dollars(2000));
-        assertEquals("withdrawals don't earn interst", new Dollars(800), year.interestEarned());
-        year.withdraw(new Dollars(2000));
-        assertEquals("capital gains tax withdrawals don't earn interest", new Dollars(566), year.interestEarned());
+        StockMarketYear marketYear = newYear();
+        assertEquals("basic interest earned", new Dollars(1000), marketYear.interestEarned());
+        marketYear.withdraw(new Dollars(2000));
+        assertEquals("withdrawals don't earn interst", new Dollars(800), marketYear.interestEarned());
+        marketYear.withdraw(new Dollars(2000));
+        assertEquals("capital gains tax withdrawals don't earn interest", new Dollars(566), marketYear.interestEarned());
     }
 
     @Test
     public void endingPrincipal() {
-        StockMarketYear year = newYear();
-        year.withdraw(new Dollars(1000));
-        assertEquals("ending principal considers withdrawals", new Dollars(2000), year.endingPrincipal());
-        year.withdraw(new Dollars(500));
-        assertEquals("ending principal considers total multiple withdrawals", new Dollars(1500), year.endingPrincipal());
-        year.withdraw(new Dollars(3000));
-        assertEquals("ending principal never goes below zero", new Dollars(0), year.endingPrincipal());
+        StockMarketYear marketYear = newYear();
+        marketYear.withdraw(new Dollars(1000));
+        assertEquals("ending principal considers withdrawals", new Dollars(2000), marketYear.endingPrincipal());
+        marketYear.withdraw(new Dollars(500));
+        assertEquals("ending principal considers total multiple withdrawals", new Dollars(1500), marketYear.endingPrincipal());
+        marketYear.withdraw(new Dollars(3000));
+        assertEquals("ending principal never goes below zero", new Dollars(0), marketYear.endingPrincipal());
     }
 
     @Test
     public void endingBalance() {
-        StockMarketYear year = newYear();
-        assertEquals("ending balance includes interest", new Dollars(11000), year.endingBalance());
-        year.withdraw(new Dollars(1000));
-        assertEquals("ending balance includes withdrawals", new Dollars(9900), year.endingBalance());
-        year.withdraw(new Dollars(3000));
-        assertEquals("ending balance includes capital gains tax withdrawals", new Dollars(6233), year.endingBalance());
+        StockMarketYear marketYear = newYear();
+        assertEquals("ending balance includes interest", new Dollars(11000), marketYear.endingBalance());
+        marketYear.withdraw(new Dollars(1000));
+        assertEquals("ending balance includes withdrawals", new Dollars(9900), marketYear.endingBalance());
+        marketYear.withdraw(new Dollars(3000));
+        assertEquals("ending balance includes capital gains tax withdrawals", new Dollars(6233), marketYear.endingBalance());
     }
 
     @Test

@@ -20,5 +20,6 @@ public class StockMarketTest {
         assertEquals(STARTING_BALANCE, account.getYearOffset(0).startingBalance());
         assertEquals(new Dollars(11000), account.getYearOffset(1).startingBalance());
         assertEquals(new Dollars(12100), account.getYearOffset(2).startingBalance());
+        assertEquals(new Year(2050), account.getYearOffset(40).year());
     }
 }

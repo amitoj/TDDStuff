@@ -1,6 +1,7 @@
 package ui;
 
 import domain.*;
+import util.UnreachableCodeException;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -39,7 +40,7 @@ public class StockMarketTableModel extends AbstractTableModel {
             case 3: return currentYear.totalWithdrawn();
             case 4: return currentYear.appreciation();
             case 5: return currentYear.endingBalance();
-            default: return null;
+            default: throw new UnreachableCodeException();
         }
     }
 }

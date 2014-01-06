@@ -1,10 +1,13 @@
 package domain;
 
+import util.Require;
+
 public class TaxRate {
 
     private double rate;
 
     public TaxRate(double rateAsPercentage) {
+        Require.that(rateAsPercentage > 0, "tax rate must be positive (and not zero); was " + rateAsPercentage);
         this.rate = rateAsPercentage / 100.0;
     }
 

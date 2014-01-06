@@ -16,12 +16,23 @@ public class Application extends JFrame {
     }
 
     private JScrollPane getTableView() {
-        StockMarket market = new StockMarket(new Year(2010), new Year(2050), new Dollars(10000), new Dollars(7000), new InterestRate(10), new TaxRate(25));
-        StockMarketTableModel model = new StockMarketTableModel(market);
-
+        StockMarketTableModel model = new StockMarketTableModel(stockMarket());
         JTable tableView = new JTable(model);
         return new JScrollPane(tableView);
     }
+
+    public StockMarket stockMarket() {
+        Year startingYear = new Year(2010);
+        Year endingYear = new Year(2050);
+        Dollars startingBalance = new Dollars(10000);
+        Dollars endingBalance = new Dollars(7000);
+        InterestRate interestRate = new InterestRate(10);
+        TaxRate capitalGainsTaxRate = new TaxRate(25);
+
+        StockMarket market = new StockMarket(startingYear, endingYear, startingBalance, endingBalance, interestRate, capitalGainsTaxRate);
+        return market;
+    }
+
 
     public static void main(String[] args) {
         new Application().setVisible(true);
