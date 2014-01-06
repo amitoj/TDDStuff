@@ -35,11 +35,12 @@ public class StockMarketYear {
     }
 
     public void withdraw(Dollars amount) {
-        this.totalWithdrawals = totalWithdrawals.add(amount);
+        this.totalWithdrawals = totalWithdrawals.plus(amount);
     }
 
     private Dollars capitalGainsWithdrawn() {
-        return totalWithdrawals.subtractToZero(startingPrincipal());
+        Dollars capitalGains = startingBalance().minus(startingPrincipal);
+        return capitalGains.maxOfTwoValues(totalWithdrawals);
     }
 
     public Dollars capitalGainsTaxIncurred() {
@@ -47,17 +48,17 @@ public class StockMarketYear {
     }
 
     public Dollars totalWithdrawn() {
-        return totalWithdrawals.add(capitalGainsTaxIncurred());
+        return totalWithdrawals.plus(capitalGainsTaxIncurred());
     }
 
     public Dollars interestEarned() {
-        return interestRate.interestOn(startingBalance.subtract(totalWithdrawn()));
+        return interestRate.interestOn(startingBalance.minus(totalWithdrawn()));
     }
 
     public Dollars endingBalance() {
         return startingBalance
-                .subtract(totalWithdrawn())
-                .add(interestEarned());
+                .minus(totalWithdrawn())
+                .plus(interestEarned());
     }
 
     public Dollars endingPrincipal() {
@@ -69,7 +70,7 @@ public class StockMarketYear {
     }
 
     public Dollars appreciation() {
-        return interestRate.interestOn(startingBalance.subtract(totalWithdrawn()));
+        return interestRate.interestOn(startingBalance.minus(totalWithdrawn()));
     }
 
     public Year year() {

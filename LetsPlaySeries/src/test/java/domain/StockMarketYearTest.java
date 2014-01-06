@@ -6,13 +6,11 @@ import static org.junit.Assert.assertEquals;
 
 public class StockMarketYearTest {
 
-
     private static final Year YEAR = new Year(2010);
     private static final InterestRate INTEREST_RATE = new InterestRate(10);
     private static final Dollars STARTING_BALANCE = new Dollars(10000);
     private static final Dollars STARTING_PRINCIPAL = new Dollars(3000);
     private static final TaxRate CAPITAL_GAINS_TAX_RATE = new TaxRate(25);
-
 
     @Test
     public void startingValues() throws Exception {
@@ -29,9 +27,26 @@ public class StockMarketYearTest {
     @Test
     public void capitalGainsTax() throws Exception {
         StockMarketYear marketYear = newYear();
+
         marketYear.withdraw(new Dollars(4000));
-        assertEquals("", new Dollars(333), marketYear.capitalGainsTaxIncurred());
-        assertEquals("", new Dollars(4333), marketYear.totalWithdrawn());
+        assertEquals("capital gains tax includes tax on withdrawals to cover capital gains", new Dollars(333), marketYear.capitalGainsTaxIncurred());
+        assertEquals("total withdrawn includes capital gains tax", new Dollars(4333), marketYear.totalWithdrawn());
+    }
+
+    @Test
+    public void capitalGainsTaxIsPaidFirst() throws Exception {
+        StockMarketYear marketYear = newYear();
+
+        Dollars capitalGains = STARTING_BALANCE.minus(STARTING_PRINCIPAL);
+
+        marketYear.withdraw(new Dollars(500));
+        assertEquals("pay tax on all withdrawals until all capital gains withdrawn", new Dollars(167), marketYear.capitalGainsTaxIncurred());
+
+        marketYear.withdraw(capitalGains);
+        assertEquals("pay tax on all withdrawals until all capital gains withdrawn", new Dollars(2333), marketYear.capitalGainsTaxIncurred() );
+
+        marketYear.withdraw(new Dollars(1000));
+        assertEquals("pay no more tax once all capital gains withdrawn", new Dollars(2333), marketYear.capitalGainsTaxIncurred() );
     }
 
     @Test
@@ -41,7 +56,7 @@ public class StockMarketYearTest {
         marketYear.withdraw(new Dollars(2000));
         assertEquals("withdrawals don't earn interst", new Dollars(800), marketYear.interestEarned());
         marketYear.withdraw(new Dollars(2000));
-        assertEquals("capital gains tax withdrawals don't earn interest", new Dollars(566), marketYear.interestEarned());
+        assertEquals("capital gains tax withdrawals don't earn interest", new Dollars(567), marketYear.interestEarned());
     }
 
     @Test

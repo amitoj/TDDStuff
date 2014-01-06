@@ -25,7 +25,6 @@ public class StockMarketTest {
     }
 
     @Test
-    @Ignore
     public void noCummulativeRoundingErrorInInterestCalculations() {
         StockMarket account = new StockMarket(STARTING_YEAR, ENDING_YEAR, STARTING_BALANCE, STARTING_PRINCIPAL, INTEREST_RATE, CAPITAL_GAINS_TAX_RATE);
         assertEquals(new Dollars(497852), account.getYearOffset(40).endingBalance());
